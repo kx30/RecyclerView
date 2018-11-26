@@ -1,5 +1,6 @@
 package com.example.nikolay.recyclerview;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,7 +8,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -22,6 +26,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private ArrayList<String> mImages = new ArrayList<>();
     private Context mContext;
+    private Dialog mDialog;
 
     public RecyclerViewAdapter (Context context, ArrayList<String> images) {
         mImages = images;
@@ -29,9 +34,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_listitem, viewGroup, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.picture_item, viewGroup, false);
         ViewHolder holder = new ViewHolder(view);
+
+        mDialog = new Dialog(mContext);
+        mDialog.setContentView(R.layout.popup);
+        ImageView dialogImageView = (ImageView) mDialog.findViewById(R.id.popup_image);
+        TextView dialogName = (TextView) mDialog.findViewById(R.id.popup_name);
+        TextView dialogDecription = (TextView) mDialog.findViewById(R.id.popup_description);
+
+        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         return holder;
     }
 
@@ -44,14 +63,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .load(mImages.get(i))
                 .into(viewHolder.image);
 
-        viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked on: " + mImages.get(i));
-
-                Toast.makeText(mContext, mImages.get(i), Toast.LENGTH_SHORT).show();
-            }
-        });
+//        viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Log.d(TAG, "onClick: clicked on: " + mImages.get(i));
+//
+//                Toast.makeText(mContext, mImages.get(i), Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     @Override

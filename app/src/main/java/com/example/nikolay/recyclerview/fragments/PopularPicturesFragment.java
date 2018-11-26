@@ -33,7 +33,9 @@ public class PopularPicturesFragment extends Fragment {
     private static final String TAG = "PopularPicturesFragment";
 
     private RecyclerView mRecyclerView;
+    private ArrayList<String> mImageNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
+    private ArrayList<String> mImageDescriptions = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,7 +114,12 @@ public class PopularPicturesFragment extends Fragment {
 
                     JSONObject image = images.getJSONObject("image");
 
+                    mImageNames.add(images.getString("name"));
                     mImageUrls.add("http://gallery.dev.webant.ru/media/" + image.getString("contentUrl"));
+                    mImageDescriptions.add(images.getString("description"));
+                    Log.d(TAG, "onPostExecute: " + "Name: " + mImageNames.get(i)
+                                + ", Description: " + mImageDescriptions.get(i)
+                                + ", Content Url: " + mImageUrls.get(i));
                 }
                 initRecyclerView();
             }

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.nikolay.recyclerview.Picture;
 import com.example.nikolay.recyclerview.R;
 import com.example.nikolay.recyclerview.RecyclerViewAdapter;
 
@@ -25,6 +26,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class NewPicturesFragment extends Fragment {
 
@@ -32,14 +34,15 @@ public class NewPicturesFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private ArrayList<String> mImageUrls = new ArrayList<>();
+    private ArrayList<Picture> mPictures = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        new NewPicturesFragment.MyTask().execute();
 
+        new NewPicturesFragment.MyTask().execute();
         Log.d(TAG, "onCreate: created.");
     }
 
@@ -111,6 +114,17 @@ public class NewPicturesFragment extends Fragment {
                     JSONObject image = images.getJSONObject("image");
 
                     mImageUrls.add("http://gallery.dev.webant.ru/media/" + image.getString("contentUrl"));
+
+                    mPictures.add(new Picture(
+                            images.getString("name"),
+                            image.getString("contentUrl"),
+                            images.getString("description")
+                    ));
+
+//                    Log.d(TAG, "onPostExecute: "
+//                                + "Name: " + mPictures.get(i).getName()
+//                                + ", url: " + mImageUrls.get(i)
+//                                + ", description: " + mPictures.get(i).getDescription());
                 }
                 initRecyclerView();
             }
