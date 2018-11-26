@@ -33,9 +33,8 @@ public class PopularPicturesFragment extends Fragment {
     private static final String TAG = "PopularPicturesFragment";
 
     private RecyclerView mRecyclerView;
-    private ArrayList<String> mImageNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
-    private ArrayList<String> mImageDescriptions = new ArrayList<>();
+    private ArrayList<Picture> mPictures = new ArrayList<>();
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +58,7 @@ public class PopularPicturesFragment extends Fragment {
     private void initRecyclerView() {
         Log.d(TAG, "initRecyclerView: init recyclerview");
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), mImageUrls);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), mPictures);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
     }
@@ -114,12 +113,18 @@ public class PopularPicturesFragment extends Fragment {
 
                     JSONObject image = images.getJSONObject("image");
 
-                    mImageNames.add(images.getString("name"));
-                    mImageUrls.add("http://gallery.dev.webant.ru/media/" + image.getString("contentUrl"));
-                    mImageDescriptions.add(images.getString("description"));
-                    Log.d(TAG, "onPostExecute: " + "Name: " + mImageNames.get(i)
-                                + ", Description: " + mImageDescriptions.get(i)
-                                + ", Content Url: " + mImageUrls.get(i));
+                    mPictures.add(new Picture(
+                            images.getString("name"),
+                            "http://gallery.dev.webant.ru/media/" + image.getString("contentUrl"),
+                            images.getString("description")
+                    ));
+
+                    Log.d(TAG, "onPostExecute: "
+                                + "Name: " + mPictures.get(i).getName()
+                                + ", url: " + mPictures.get(i).getUrl()
+                                + ", description " + mPictures.get(i).getDescription()
+                    );
+
                 }
                 initRecyclerView();
             }

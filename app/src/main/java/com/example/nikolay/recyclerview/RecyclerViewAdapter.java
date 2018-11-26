@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -24,30 +25,43 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> mImages = new ArrayList<>();
+    private List<Picture> mPictures;
     private Context mContext;
     private Dialog mDialog;
 
-    public RecyclerViewAdapter (Context context, ArrayList<String> images) {
-        mImages = images;
+    public RecyclerViewAdapter(Context context, ArrayList<Picture> pictures) {
+        mPictures = pictures;
         mContext = context;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.picture_item, viewGroup, false);
-        ViewHolder holder = new ViewHolder(view);
+        final ViewHolder holder = new ViewHolder(view);
 
         mDialog = new Dialog(mContext);
         mDialog.setContentView(R.layout.popup);
-        ImageView dialogImageView = (ImageView) mDialog.findViewById(R.id.popup_image);
-        TextView dialogName = (TextView) mDialog.findViewById(R.id.popup_name);
-        TextView dialogDecription = (TextView) mDialog.findViewById(R.id.popup_description);
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                TextView dialogName = (TextView) mDialog.findViewById(R.id.popup_name);
+                TextView dialogDescription = (TextView) mDialog.findViewById(R.id.popup_description);
+                ImageView dialogImage = (ImageView) mDialog.findViewById(R.id.popup_image);
+
+                dialogName.setText(mPictures.get(holder.getAdapterPosition()).getName());
+                dialogDescription.setText(mPictures.get(holder.getAdapterPosition()).getDescription());
+
+                Glide.with(mContext)
+                        .asBitmap()
+                        .load(mPictures.get(holder.getAdapterPosition()).getUrl())
+                        .into(dialogImage);
+
+                Log.d(TAG, "onClick: " + mPictures.get(holder.getAdapterPosition()).getUrl());
+
+
+                mDialog.show();
             }
         });
 
@@ -55,27 +69,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         Log.d(TAG, "onBindViewHolder: called.");
 
         Glide.with(mContext)
                 .asBitmap()
-                .load(mImages.get(i))
+                .load(mPictures.get(i).getUrl())
                 .into(viewHolder.image);
 
 //        viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                Log.d(TAG, "onClick: clicked on: " + mImages.get(i));
-//
-//                Toast.makeText(mContext, mImages.get(i), Toast.LENGTH_SHORT).show();
 //            }
 //        });
     }
 
     @Override
     public int getItemCount() {
-        return mImages.size();
+        return mPictures.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

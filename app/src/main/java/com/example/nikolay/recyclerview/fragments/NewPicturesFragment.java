@@ -33,7 +33,6 @@ public class NewPicturesFragment extends Fragment {
     private static final String TAG = "NewPicturesFragment";
 
     private RecyclerView mRecyclerView;
-    private ArrayList<String> mImageUrls = new ArrayList<>();
     private ArrayList<Picture> mPictures = new ArrayList<>();
 
     @Override
@@ -58,7 +57,7 @@ public class NewPicturesFragment extends Fragment {
     private void initRecyclerView() {
         Log.d(TAG, "initRecyclerView: init recyclerview");
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), mImageUrls);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getContext(), mPictures);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
     }
@@ -113,18 +112,17 @@ public class NewPicturesFragment extends Fragment {
 
                     JSONObject image = images.getJSONObject("image");
 
-                    mImageUrls.add("http://gallery.dev.webant.ru/media/" + image.getString("contentUrl"));
-
                     mPictures.add(new Picture(
                             images.getString("name"),
-                            image.getString("contentUrl"),
+                            "http://gallery.dev.webant.ru/media/" + image.getString("contentUrl"),
                             images.getString("description")
                     ));
 
-//                    Log.d(TAG, "onPostExecute: "
-//                                + "Name: " + mPictures.get(i).getName()
-//                                + ", url: " + mImageUrls.get(i)
-//                                + ", description: " + mPictures.get(i).getDescription());
+                    Log.d(TAG, "onPostExecute: "
+                            + "Name: " + mPictures.get(i).getName()
+                            + ", url: " + mPictures.get(i).getUrl()
+                            + ", description " + mPictures.get(i).getDescription()
+                    );
                 }
                 initRecyclerView();
             }
