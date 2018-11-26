@@ -2,12 +2,15 @@ package com.example.nikolay.recyclerview;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+
+import com.example.nikolay.recyclerview.fragments.NewPicturesFragment;
+import com.example.nikolay.recyclerview.fragments.PopularPicturesFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,10 +29,20 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<String> mImageUrls = new ArrayList<>();
 
+    private SectionsPageAdapter mSectionsPageAdapter;
+
+    private ViewPager mViewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        setupViewPager(mViewPager);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
 
         new MyTask().execute();
 
@@ -44,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mImageUrls);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
+        adapter.addFragment(new NewPicturesFragment(), "New");
+        adapter.addFragment(new PopularPicturesFragment(), "Popular");
+        viewPager.setAdapter(adapter);
     }
 
 
