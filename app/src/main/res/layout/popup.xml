@@ -37,7 +37,6 @@
             android:layout_marginRight="20dp"
             android:text="Description"
             android:textColor="@color/popup_description"
-
             android:textSize="20dp" />
 
     </RelativeLayout>
