@@ -30,5 +30,12 @@
 
     </android.support.v4.view.ViewPager>
 
+    <ImageView
+        android:id="@+id/no_connection_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
+
 </android.support.design.widget.CoordinatorLayout>
 

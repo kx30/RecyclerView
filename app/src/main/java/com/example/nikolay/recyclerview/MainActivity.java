@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.example.nikolay.recyclerview.fragments.NewPicturesFragment;
@@ -38,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout.setupWithViewPager(mViewPager);
 
         if (!hasConnection(this)) {
-            Log.d(TAG, "onCreate: No connection!");
+            ImageView noConnectionImageView = (ImageView) findViewById(R.id.no_connection_image_view);
+            noConnectionImageView.setImageResource(R.drawable.no_connection);
+            noConnectionImageView.setVisibility(View.VISIBLE);
         } else {
             Log.d(TAG, "onCreate: Connection!");
         }
