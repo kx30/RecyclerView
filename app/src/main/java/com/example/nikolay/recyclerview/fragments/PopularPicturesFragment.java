@@ -64,6 +64,8 @@ public class PopularPicturesFragment extends Fragment {
     }
 
     private class MyTask extends AsyncTask<Void, Void, String> {
+        //TODO To realize polymorphism
+        //TODO Create image check
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String resultJson = "";

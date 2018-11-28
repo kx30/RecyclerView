@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static boolean hasConnection(final Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
         NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (wifiInfo != null && wifiInfo.isConnected()) {
             return true;
@@ -66,5 +67,9 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    //TODO CREATE POOL-REFRESH
+    //TODO CREATE PAGINATION
+    //TODO UPDATE DESIGN
 
 }
