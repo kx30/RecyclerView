@@ -55,7 +55,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onClick(View view) {
 
                 Dialog mDialog = new Dialog(mContext);
-                mDialog.setContentView(R.layout.popup);
+                mDialog.setContentView(R.layout.activity_popup);
 
                 mDialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override

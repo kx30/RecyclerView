@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.nikolay.recyclerview.fragments.NewPicturesFragment;
 import com.example.nikolay.recyclerview.fragments.PopularPicturesFragment;
@@ -40,8 +41,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (!hasConnection(this)) {
             ImageView noConnectionImageView = (ImageView) findViewById(R.id.no_connection_image_view);
-            noConnectionImageView.setImageResource(R.drawable.no_connection);
+            TextView noConnectionMainText = (TextView) findViewById(R.id.no_connection_main_text);
+            TextView noConnectionDescriptionText = (TextView) findViewById(R.id.no_connection_description_text);
+
             noConnectionImageView.setVisibility(View.VISIBLE);
+            noConnectionMainText.setVisibility(View.VISIBLE);
+            noConnectionDescriptionText.setVisibility(View.VISIBLE);
         } else {
             Log.d(TAG, "onCreate: Connection!");
         }

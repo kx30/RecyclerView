@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">RecyclerView</string>
+
+    // No connection
+    <string name="no_connection_main">Oh shucks!</string>
+    <string name="no_connection_description">"Slow or not internet connection.\nPlease check your internet settings"</string>
+
 </resources>

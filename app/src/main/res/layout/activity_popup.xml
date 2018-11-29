@@ -25,8 +25,8 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:text="Name"
-            android:textColor="@color/popup_name"
-            android:textSize="26dp" />
+            android:textColor="@color/main_text"
+            android:textSize="24dp" />
 
         <TextView
             android:id="@+id/popup_description"
@@ -36,7 +36,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:text="Description"
-            android:textColor="@color/popup_description"
+            android:textColor="@color/description_text"
             android:textSize="20dp" />
 
     </RelativeLayout>
