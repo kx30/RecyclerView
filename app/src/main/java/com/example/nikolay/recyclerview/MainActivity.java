@@ -1,10 +1,12 @@
 package com.example.nikolay.recyclerview;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -29,15 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTabLayout = (TabLayout) findViewById(R.id.tabs);
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        adapter = new SectionsPageAdapter(getSupportFragmentManager());
-
-        adapter.addFragment(new NewPicturesFragment(), "New");
-        adapter.addFragment(new PopularPicturesFragment(), "Popular");
-
-        mViewPager.setAdapter(adapter);
-        mTabLayout.setupWithViewPager(mViewPager);
+        setupViewPager(this);
 
         if (!hasConnection(this)) {
             ImageView noConnectionImageView = (ImageView) findViewById(R.id.no_connection_image_view);
@@ -55,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public static boolean hasConnection(final Context context) {
+    private static boolean hasConnection(final Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         assert cm != null;
         NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
@@ -71,6 +65,43 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    private void setupViewPager(final Context context) {
+        mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        adapter = new SectionsPageAdapter(getSupportFragmentManager());
+
+        adapter.addFragment(new NewPicturesFragment(), "New");
+        adapter.addFragment(new PopularPicturesFragment(), "Popular");
+
+        mViewPager.setAdapter(adapter);
+        mTabLayout.setupWithViewPager(mViewPager);
+
+        mTabLayout.getTabAt(0).setIcon(R.drawable.new_icon);
+        mTabLayout.getTabAt(1).setIcon(R.drawable.fire_icon);
+
+        new TabLayout.ViewPagerOnTabSelectedListener(mViewPager) {
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                int tabColor = ContextCompat.getColor(context, R.color.selected_tab);
+                tab.getIcon().setColorFilter(tabColor, PorterDuff.Mode.SRC_IN);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                super.onTabUnselected(tab);
+                int tabColor = ContextCompat.getColor(context, R.color.unselected_tab);
+                tab.getIcon().setColorFilter(tabColor, PorterDuff.Mode.SRC_IN);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
+            }
+        };
     }
 
     //TODO CREATE POOL-REFRESH
