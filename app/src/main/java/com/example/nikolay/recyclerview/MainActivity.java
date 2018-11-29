@@ -1,14 +1,13 @@
 package com.example.nikolay.recyclerview;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -80,28 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
         mTabLayout.getTabAt(0).setIcon(R.drawable.new_icon);
         mTabLayout.getTabAt(1).setIcon(R.drawable.fire_icon);
-
-        new TabLayout.ViewPagerOnTabSelectedListener(mViewPager) {
-
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                super.onTabSelected(tab);
-                int tabColor = ContextCompat.getColor(context, R.color.selected_tab);
-                tab.getIcon().setColorFilter(tabColor, PorterDuff.Mode.SRC_IN);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                super.onTabUnselected(tab);
-                int tabColor = ContextCompat.getColor(context, R.color.unselected_tab);
-                tab.getIcon().setColorFilter(tabColor, PorterDuff.Mode.SRC_IN);
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                super.onTabReselected(tab);
-            }
-        };
     }
 
     //TODO CREATE POOL-REFRESH
