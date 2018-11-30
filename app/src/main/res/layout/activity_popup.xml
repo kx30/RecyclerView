@@ -4,42 +4,39 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/popup_image"
+    <ImageView
+        android:id="@+id/popup_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-        android:src="@mipmap/ic_launcher"
         android:layout_weight="1" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="28dp"
         android:layout_weight="1">
 
         <TextView
-            android:id="@+id/popup_name"
+            android:id="@+id/popup_name_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="Name"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:text="asdasda"
             android:textColor="@color/main_text"
             android:textSize="24dp" />
 
         <TextView
-            android:id="@+id/popup_description"
+            android:id="@+id/popup_description_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/popup_name"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="Description"
-            android:textColor="@color/description_text"
-            android:textSize="20dp" />
+            android:layout_below="@id/popup_name_text"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="30dp"
+            android:text="213123"
+            android:textColor="@color/description_text" />
 
     </RelativeLayout>
-
 
 </LinearLayout>

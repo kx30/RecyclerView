@@ -3,6 +3,7 @@ package com.example.nikolay.recyclerview;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.nikolay.recyclerview.popup.PopupActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,32 +56,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             @Override
             public void onClick(View view) {
-
-                Dialog mDialog = new Dialog(mContext);
-                mDialog.setContentView(R.layout.activity_popup);
-
-                mDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                    @Override
-                    public void onShow(DialogInterface dialogInterface) {
-
-                        Dialog dialog = (Dialog) dialogInterface;
-                        TextView dialogName = (TextView) dialog.findViewById(R.id.popup_name);
-                        TextView dialogDescription = (TextView) dialog.findViewById(R.id.popup_description);
-                        CircleImageView dialogImage = (CircleImageView) dialog.findViewById(R.id.popup_image);
-
-                        Glide.with(mContext)
-                                .asBitmap()
-                                .load(mPictures.get(i).getUrl())
-                                .into(dialogImage);
-                        dialogName.setText(mPictures.get(i).getName());
-                        dialogDescription.setText(mPictures.get(i).getDescription());
-                    }
-                });
-
-                Log.d(TAG, "onClick: " + mPictures.get(i).getUrl());
-
-
-                mDialog.show();
+                Intent intent = new Intent(mContext, PopupActivity.class);
+                intent.putExtra("Url", mPictures.get(i).getUrl());
+                intent.putExtra("Name", mPictures.get(i).getName());
+                intent.putExtra("Description", mPictures.get(i).getDescription());
+                mContext.startActivity(intent);
             }
         });
 
