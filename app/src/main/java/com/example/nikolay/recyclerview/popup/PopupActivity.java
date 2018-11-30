@@ -4,7 +4,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,7 +17,7 @@ import com.example.nikolay.recyclerview.R;
 public class PopupActivity extends AppCompatActivity {
 
     private static final String TAG = "PopupActivity";
-    
+
     private ImageView mImageView;
     private TextView mNameText, mDescriptionText;
 
@@ -23,16 +25,22 @@ public class PopupActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popup);
-
         mImageView = findViewById(R.id.popup_image_view);
         mNameText = findViewById(R.id.popup_name_text);
         mDescriptionText = findViewById(R.id.popup_description_text);
 
+        initToolbar();
+
+        getExtras();
+
+    }
+
+    private void getExtras() {
         String url = "", name = "", description = "";
 
         try {
             Bundle arguments = getIntent().getExtras();
-            if(arguments != null) {
+            if (arguments != null) {
 
                 url += arguments.get("Url").toString();
 
@@ -51,5 +59,23 @@ public class PopupActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, "Error in Popup Activity", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

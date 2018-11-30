@@ -12,8 +12,9 @@
         <item name="android:textSize">10sp</item>
     </style>
 
-    <style name="MineCustomTitleToolbarText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+    <style name="MineCustomToolbar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textSize">30dp</item>
+        <item name="android:colorControlNormal">@color/main_text</item>
     </style>
 
 </resources>
