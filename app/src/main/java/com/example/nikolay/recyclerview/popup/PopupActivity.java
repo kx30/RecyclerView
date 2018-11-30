@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.nikolay.recyclerview.MainActivity;
 import com.example.nikolay.recyclerview.R;
 
 public class PopupActivity extends AppCompatActivity {
@@ -22,6 +23,16 @@ public class PopupActivity extends AppCompatActivity {
     private TextView mNameText, mDescriptionText;
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popup);
@@ -30,10 +41,37 @@ public class PopupActivity extends AppCompatActivity {
         mDescriptionText = findViewById(R.id.popup_description_text);
 
         initToolbar();
-
         getExtras();
 
+        MainActivity mainActivity = new MainActivity();
+
+        Log.d(TAG, "onCreate: started");
+
     }
+
+//    private void setupViewPager(final Context context) {
+//        final TabLayout mTabLayout = (TabLayout) findViewById(R.id.tabs);
+//
+//        mTabLayout.addTab(mTabLayout.newTab().setIcon(R.drawable.new_icon).setText("New"));
+//        mTabLayout.addTab(mTabLayout.newTab().setIcon(R.drawable.fire_icon).setText("Popular"));
+//
+//        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                finish();
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//                finish();
+//            }
+//        });
+//    }
 
     private void getExtras() {
         String url = "", name = "", description = "";
@@ -67,15 +105,5 @@ public class PopupActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

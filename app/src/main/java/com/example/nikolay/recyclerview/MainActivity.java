@@ -25,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private SectionsPageAdapter adapter;
 
+    public SectionsPageAdapter getAdapter() {
+        return adapter;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout.getTabAt(0).setIcon(R.drawable.new_icon);
         mTabLayout.getTabAt(1).setIcon(R.drawable.fire_icon);
     }
+
 
     //TODO CREATE POOL-REFRESH
     //TODO CREATE PAGINATION
