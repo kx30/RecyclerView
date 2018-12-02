@@ -1,7 +1,5 @@
 package com.example.nikolay.recyclerview.connection;
 
-import android.util.Log;
-
 import com.example.nikolay.recyclerview.Picture;
 
 import org.json.JSONArray;
@@ -17,14 +15,16 @@ import java.util.ArrayList;
 
 public class Connection {
 
-    public String getJSON(String connectionURL) {
+    private int mTotalPages;
+
+    public String getJSON(String connectionURL, int currentPage) {
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
         String resultJson = "";
 
         try {
-            URL url = new URL(connectionURL);
+            URL url = new URL(connectionURL + currentPage + "&limit=10");
 
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
@@ -49,13 +49,15 @@ public class Connection {
         return resultJson;
     }
 
-    public void parseItems(ArrayList<Picture> pictures, String json) {
+    public int parseItems(ArrayList<Picture> pictures, String json) {
 
         JSONObject dataJsonObj;
 
         try {
             dataJsonObj = new JSONObject(json);
             JSONArray data = dataJsonObj.getJSONArray("data");
+
+            mTotalPages = dataJsonObj.getInt("countOfPages");
 
             for (int i = 0; i < data.length(); i++) {
                 JSONObject images = data.getJSONObject(i);
@@ -72,6 +74,7 @@ public class Connection {
         catch (JSONException e) {
             e.printStackTrace();
         }
+        return mTotalPages;
     }
 
 }
