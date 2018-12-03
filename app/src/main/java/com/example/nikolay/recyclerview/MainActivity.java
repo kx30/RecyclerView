@@ -87,6 +87,4 @@ public class MainActivity extends AppCompatActivity {
 
 
     //TODO CREATE POOL-REFRESH
-    //TODO CREATE PAGINATION
-
 }
