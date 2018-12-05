@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nikolay.recyclerview.Picture;
@@ -23,18 +26,7 @@ import com.example.nikolay.recyclerview.R;
 import com.example.nikolay.recyclerview.RecyclerViewAdapter;
 import com.example.nikolay.recyclerview.connection.Connection;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PopularPicturesFragment extends Fragment {
 
@@ -42,6 +34,7 @@ public class PopularPicturesFragment extends Fragment {
     private static final String URL_CONNECTION = "http://gallery.dev.webant.ru/api/photos?popular=true&page=";
 
     private ProgressBar mProgressBar;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private GridLayoutManager mManager;
     private RecyclerViewAdapter mAdapter;
@@ -70,9 +63,23 @@ public class PopularPicturesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mManager = new GridLayoutManager(getContext(), 2);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeContent();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 2000);
+            }
+        });
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -106,6 +113,29 @@ public class PopularPicturesFragment extends Fragment {
         return view;
     }
 
+    private void swipeContent() {
+        ImageView noConnectionImageView = (ImageView) getView().findViewById(R.id.no_connection_image_view);
+        TextView noConnectionMainText = (TextView) getView().findViewById(R.id.no_connection_main_text);
+        TextView noConnectionDescriptionText = (TextView) getView().findViewById(R.id.no_connection_description_text);
+
+        if (!new Connection().hasConnection(getContext())) {
+            mRecyclerView.setVisibility(View.INVISIBLE);
+            Log.d(TAG, "swipeContent: no connection");
+
+            noConnectionImageView.setVisibility(View.VISIBLE);
+            noConnectionMainText.setVisibility(View.VISIBLE);
+            noConnectionDescriptionText.setVisibility(View.VISIBLE);
+        }
+        if (new Connection().hasConnection(getContext())) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            Log.d(TAG, "swipeContent: connection!");
+
+            noConnectionImageView.setVisibility(View.INVISIBLE);
+            noConnectionMainText.setVisibility(View.INVISIBLE);
+            noConnectionDescriptionText.setVisibility(View.INVISIBLE);
+        }
+    }
+
     private void fetchData() {
         if (!mIsDownloaded) {
             mProgressBar.setVisibility(View.VISIBLE);
@@ -114,11 +144,13 @@ public class PopularPicturesFragment extends Fragment {
             @Override
             public void run() {
                 if (!mIsDownloaded && mCurrentPage <= mTotalPages) {
-                    new MyTask().execute();
+                    swipeContent();
+                    new     MyTask().execute();
                     mCurrentPage++;
                     mProgressBar.setVisibility(View.GONE);
                 }
                 if (!mIsDownloaded && mCurrentPage > mTotalPages) {
+                    swipeContent();
                     Toast.makeText(getContext(), "All pictures have already been downloaded", Toast.LENGTH_SHORT).show();
                     mProgressBar.setVisibility(View.GONE);
                     mIsDownloaded = true;

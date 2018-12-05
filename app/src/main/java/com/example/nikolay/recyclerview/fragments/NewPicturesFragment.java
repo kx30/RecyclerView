@@ -1,6 +1,5 @@
 package com.example.nikolay.recyclerview.fragments;
 
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,26 +63,21 @@ public class NewPicturesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mManager = new GridLayoutManager(getContext(), 2);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (!new Connection().hasConnection(getContext())) {
-                    swipeContent(false);
-                }
-                if (new Connection().hasConnection(getContext())) {
-                    swipeContent(true);
-                }
+                swipeContent();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
-                }, 3000);
+                }, 2000);
             }
         });
 
@@ -120,20 +114,22 @@ public class NewPicturesFragment extends Fragment {
         return view;
     }
 
-    private void swipeContent(boolean isConnection) {
+    private void swipeContent() {
         ImageView noConnectionImageView = (ImageView) getView().findViewById(R.id.no_connection_image_view);
         TextView noConnectionMainText = (TextView) getView().findViewById(R.id.no_connection_main_text);
         TextView noConnectionDescriptionText = (TextView) getView().findViewById(R.id.no_connection_description_text);
 
-        if (!isConnection) {
+        if (!new Connection().hasConnection(getContext())) {
             mRecyclerView.setVisibility(View.INVISIBLE);
+            Log.d(TAG, "swipeContent: no connection");
 
             noConnectionImageView.setVisibility(View.VISIBLE);
             noConnectionMainText.setVisibility(View.VISIBLE);
             noConnectionDescriptionText.setVisibility(View.VISIBLE);
         }
-        if (isConnection) {
+        if (new Connection().hasConnection(getContext())) {
             mRecyclerView.setVisibility(View.VISIBLE);
+            Log.d(TAG, "swipeContent: connection!");
 
             noConnectionImageView.setVisibility(View.INVISIBLE);
             noConnectionMainText.setVisibility(View.INVISIBLE);
@@ -149,11 +145,13 @@ public class NewPicturesFragment extends Fragment {
             @Override
             public void run() {
                 if (!mIsDownloaded && mCurrentPage <= mTotalPages) {
+                    swipeContent();
                     new MyTask().execute();
                     mCurrentPage++;
                     mProgressBar.setVisibility(View.GONE);
                 }
                 if (!mIsDownloaded && mCurrentPage > mTotalPages) {
+                    swipeContent();
                     Toast.makeText(getContext(), "All pictures have already been downloaded", Toast.LENGTH_SHORT).show();
                     mProgressBar.setVisibility(View.GONE);
                     mIsDownloaded = true;

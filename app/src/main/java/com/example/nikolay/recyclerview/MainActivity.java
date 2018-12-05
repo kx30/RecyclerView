@@ -33,58 +33,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(this);
-
-//        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
-//
-//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                if (!new Connection().hasConnection(MainActivity.this)) {
-//                    hideContext(true);
-//                    mIsNoConnection = true;
-//                    Log.d(TAG, "onRefresh: No connection");
-//                } else if (new Connection().hasConnection(MainActivity.this) && mIsNoConnection) {
-//                    hideContext(false);
-//                    setupViewPager(MainActivity.this);
-//                    Log.d(TAG, "onRefresh: Connection");
-//                    mIsNoConnection = false;
-//                }
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mSwipeRefreshLayout.setRefreshing(false);
-//                    }
-//                }, 3000);
-//            }
-//        });
-
-
-//        if (!new Connection().hasConnection(this)) {
-//            hideContext();
-//        } else {
-//            Log.d(TAG, "onCreate: Connection!");
-//        }
 
         Log.d(TAG, "onCreate: started");
     }
 
-    private void hideContext() {
-
-        ImageView noConnectionImageView = (ImageView) findViewById(R.id.no_connection_image_view);
-        TextView noConnectionMainText = (TextView) findViewById(R.id.no_connection_main_text);
-        TextView noConnectionDescriptionText = (TextView) findViewById(R.id.no_connection_description_text);
-
-        mViewPager.setVisibility(View.INVISIBLE);
-
-        noConnectionImageView.setVisibility(View.VISIBLE);
-        noConnectionMainText.setVisibility(View.VISIBLE);
-        noConnectionDescriptionText.setVisibility(View.VISIBLE);
-    }
-
     private void setupViewPager(final Context context) {
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        mViewPager = (ViewPager) findViewById(R.id.container);
         adapter = new SectionsPageAdapter(getSupportFragmentManager());
 
         adapter.addFragment(new NewPicturesFragment(), "New");
@@ -96,7 +52,4 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout.getTabAt(0).setIcon(R.drawable.new_icon);
         mTabLayout.getTabAt(1).setIcon(R.drawable.fire_icon);
     }
-
-
-    //TODO CREATE POOL-REFRESH
 }
