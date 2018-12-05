@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +42,7 @@ public class NewPicturesFragment extends Fragment {
     private static final String URL_CONNECTION = "http://gallery.dev.webant.ru/api/photos?new=true&page=";
 
     private ProgressBar mProgressBar;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private GridLayoutManager mManager;
     private RecyclerViewAdapter mAdapter;
@@ -71,6 +73,23 @@ public class NewPicturesFragment extends Fragment {
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.new_recycler_view);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (!new Connection().hasConnection(getContext())) {
+
+                }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 3000);
+            }
+        });
+
         mManager = new GridLayoutManager(getContext(), 2);
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

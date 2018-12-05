@@ -4,8 +4,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.nikolay.recyclerview.connection.Connection;
 import com.example.nikolay.recyclerview.fragments.NewPicturesFragment;
 import com.example.nikolay.recyclerview.fragments.PopularPicturesFragment;
 import com.example.nikolay.recyclerview.fragments.SectionsPageAdapter;
@@ -25,25 +28,41 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private SectionsPageAdapter adapter;
 
-    public SectionsPageAdapter getAdapter() {
-        return adapter;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(this);
 
-        if (!hasConnection(this)) {
-            ImageView noConnectionImageView = (ImageView) findViewById(R.id.no_connection_image_view);
-            TextView noConnectionMainText = (TextView) findViewById(R.id.no_connection_main_text);
-            TextView noConnectionDescriptionText = (TextView) findViewById(R.id.no_connection_description_text);
+//        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+//
+//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                if (!new Connection().hasConnection(MainActivity.this)) {
+//                    hideContext(true);
+//                    mIsNoConnection = true;
+//                    Log.d(TAG, "onRefresh: No connection");
+//                } else if (new Connection().hasConnection(MainActivity.this) && mIsNoConnection) {
+//                    hideContext(false);
+//                    setupViewPager(MainActivity.this);
+//                    Log.d(TAG, "onRefresh: Connection");
+//                    mIsNoConnection = false;
+//                }
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mSwipeRefreshLayout.setRefreshing(false);
+//                    }
+//                }, 3000);
+//            }
+//        });
 
-            noConnectionImageView.setVisibility(View.VISIBLE);
-            noConnectionMainText.setVisibility(View.VISIBLE);
-            noConnectionDescriptionText.setVisibility(View.VISIBLE);
+
+        if (!new Connection().hasConnection(this)) {
+            hideContext();
         } else {
             Log.d(TAG, "onCreate: Connection!");
         }
@@ -51,28 +70,21 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: started");
     }
 
+    private void hideContext() {
 
-    private static boolean hasConnection(final Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        assert cm != null;
-        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiInfo != null && wifiInfo.isConnected()) {
-            return true;
-        }
-        wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        if (wifiInfo != null && wifiInfo.isConnected()) {
-            return true;
-        }
-        wifiInfo = cm.getActiveNetworkInfo();
-        if (wifiInfo != null && wifiInfo.isConnected()) {
-            return true;
-        }
-        return false;
+        ImageView noConnectionImageView = (ImageView) findViewById(R.id.no_connection_image_view);
+        TextView noConnectionMainText = (TextView) findViewById(R.id.no_connection_main_text);
+        TextView noConnectionDescriptionText = (TextView) findViewById(R.id.no_connection_description_text);
+
+        mViewPager.setVisibility(View.INVISIBLE);
+
+        noConnectionImageView.setVisibility(View.VISIBLE);
+        noConnectionMainText.setVisibility(View.VISIBLE);
+        noConnectionDescriptionText.setVisibility(View.VISIBLE);
     }
 
     private void setupViewPager(final Context context) {
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
-        mViewPager = (ViewPager) findViewById(R.id.container);
         adapter = new SectionsPageAdapter(getSupportFragmentManager());
 
         adapter.addFragment(new NewPicturesFragment(), "New");
