@@ -68,9 +68,9 @@ public class PopularPicturesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.popular_fragment_gallery, container, false);
+        View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.popular_recycler_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
         mManager = new GridLayoutManager(getContext(), 2);
 

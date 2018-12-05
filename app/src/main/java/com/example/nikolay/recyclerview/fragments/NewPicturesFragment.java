@@ -1,5 +1,6 @@
 package com.example.nikolay.recyclerview.fragments;
 
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nikolay.recyclerview.Picture;
@@ -24,17 +27,7 @@ import com.example.nikolay.recyclerview.R;
 import com.example.nikolay.recyclerview.RecyclerViewAdapter;
 import com.example.nikolay.recyclerview.connection.Connection;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class NewPicturesFragment extends Fragment {
 
@@ -69,17 +62,21 @@ public class NewPicturesFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.new_fragment_gallery, container, false);
+        View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.new_recycler_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress);
+        mManager = new GridLayoutManager(getContext(), 2);
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (!new Connection().hasConnection(getContext())) {
-
+                    swipeContent(false);
+                }
+                if (new Connection().hasConnection(getContext())) {
+                    swipeContent(true);
                 }
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -90,7 +87,6 @@ public class NewPicturesFragment extends Fragment {
             }
         });
 
-        mManager = new GridLayoutManager(getContext(), 2);
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -122,6 +118,27 @@ public class NewPicturesFragment extends Fragment {
 
         Log.d(TAG, "onCreateView: created.");
         return view;
+    }
+
+    private void swipeContent(boolean isConnection) {
+        ImageView noConnectionImageView = (ImageView) getView().findViewById(R.id.no_connection_image_view);
+        TextView noConnectionMainText = (TextView) getView().findViewById(R.id.no_connection_main_text);
+        TextView noConnectionDescriptionText = (TextView) getView().findViewById(R.id.no_connection_description_text);
+
+        if (!isConnection) {
+            mRecyclerView.setVisibility(View.INVISIBLE);
+
+            noConnectionImageView.setVisibility(View.VISIBLE);
+            noConnectionMainText.setVisibility(View.VISIBLE);
+            noConnectionDescriptionText.setVisibility(View.VISIBLE);
+        }
+        if (isConnection) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+
+            noConnectionImageView.setVisibility(View.INVISIBLE);
+            noConnectionMainText.setVisibility(View.INVISIBLE);
+            noConnectionDescriptionText.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void fetchData() {

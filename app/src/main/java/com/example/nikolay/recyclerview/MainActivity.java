@@ -61,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
-        if (!new Connection().hasConnection(this)) {
-            hideContext();
-        } else {
-            Log.d(TAG, "onCreate: Connection!");
-        }
+//        if (!new Connection().hasConnection(this)) {
+//            hideContext();
+//        } else {
+//            Log.d(TAG, "onCreate: Connection!");
+//        }
 
         Log.d(TAG, "onCreate: started");
     }

@@ -32,36 +32,6 @@
 
         </android.support.v4.view.ViewPager>
 
-    <ImageView
-        android:id="@+id/no_connection_image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="180dp"
-        android:src="@drawable/no_connection"
-        android:visibility="invisible" />
-
-    <TextView
-        android:id="@+id/no_connection_main_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/no_connection_main"
-        android:textColor="@color/main_text"
-        android:textSize="24dp"
-        android:visibility="invisible" />
-
-    <TextView
-        android:id="@+id/no_connection_description_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="60dp"
-        android:text="@string/no_connection_description"
-        android:textAlignment="center"
-        android:textColor="@color/description_text"
-        android:visibility="invisible" />
-
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="wrap_content"

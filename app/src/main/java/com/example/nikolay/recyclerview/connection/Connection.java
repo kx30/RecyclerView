@@ -3,8 +3,11 @@ package com.example.nikolay.recyclerview.connection;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import com.example.nikolay.recyclerview.Picture;
+import com.example.nikolay.recyclerview.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -98,5 +101,4 @@ public class Connection {
         }
         return false;
     }
-
 }
